@@ -41,6 +41,7 @@ const Navbar = () => {
             <Link to="/team" className="nav-link">Team</Link>
             <Link to="/schedule" className="nav-link">Schedule</Link>
             <Link to="/gallery" className="nav-link">Gallery</Link>
+            <Link to="/sponsors" className="nav-link">Sponsors</Link>
             <Link to="/about" className="nav-link">About</Link>
             <Link to="/contact" className="nav-link">Contact</Link>
           </div>
@@ -90,6 +91,13 @@ const Navbar = () => {
               onClick={() => setIsOpen(false)}
             >
               Gallery
+            </Link>
+            <Link 
+              to="/sponsors" 
+              className="text-white hover:text-rossview-red py-2 transition-colors"
+              onClick={() => setIsOpen(false)}
+            >
+              Sponsors
             </Link>
             <Link 
               to="/about" 
