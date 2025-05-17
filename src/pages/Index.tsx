@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link } from "react-router-dom";
-import { Calendar, Flag, MapPin, Users } from "lucide-react";
+import { Calendar, Flag, MapPin, Users, BookOpen } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -210,7 +210,7 @@ const Index = () => {
             <div className="text-center">
               <div className="flex justify-center mb-4">
                 <div className="h-16 w-16 rounded-full bg-rossview-red flex items-center justify-center">
-                  <School className="h-8 w-8 text-white" />
+                  <BookOpen className="h-8 w-8 text-white" />
                 </div>
               </div>
               <h3 className="text-xl font-bold mb-2">Academic Success</h3>

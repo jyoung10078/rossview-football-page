@@ -1,6 +1,5 @@
-
 import { Link } from "react-router-dom";
-import { MapPin, School, Football } from "lucide-react";
+import { MapPin, BookOpen, Activity } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -11,7 +10,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <h3 className="text-xl font-display font-bold mb-4 flex items-center">
-              <Football className="mr-2 h-5 w-5 text-rossview-red" /> 
+              <Activity className="mr-2 h-5 w-5 text-rossview-red" /> 
               ROSSVIEW HAWKS
             </h3>
             <p className="text-gray-300 mb-4">
@@ -64,7 +63,7 @@ const Footer = () => {
           
           <div>
             <h3 className="text-xl font-display font-bold mb-4 flex items-center">
-              <School className="mr-2 h-5 w-5 text-rossview-red" />
+              <BookOpen className="mr-2 h-5 w-5 text-rossview-red" />
               Connect With Us
             </h3>
             <p className="text-gray-300 mb-4">
