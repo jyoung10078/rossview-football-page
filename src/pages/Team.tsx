@@ -2,7 +2,9 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Users, Trophy, Award } from "lucide-react";
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Users, Trophy, Award, Table as TableIcon } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -145,39 +147,40 @@ const Team = () => {
                 </p>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                {players.map(player => (
-                  <Card key={player.id} className="overflow-hidden">
-                    <div className="relative h-64">
-                      <img 
-                        src={player.image} 
-                        alt={player.name}
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute top-0 right-0 bg-rossview-red text-white text-xl font-bold h-12 w-12 flex items-center justify-center">
-                        {player.number}
-                      </div>
-                    </div>
-                    <CardContent className="p-6">
-                      <h3 className="text-xl font-bold mb-1">{player.name}</h3>
-                      <div className="flex items-center mb-3">
-                        <Award className="h-5 w-5 mr-1 text-rossview-red" />
-                        <span className="font-medium">{player.position}</span>
-                      </div>
-                      <div className="grid grid-cols-2 gap-2 text-sm text-gray-700">
-                        <div>
-                          <span className="font-semibold">Grade:</span> {player.grade}
-                        </div>
-                        <div>
-                          <span className="font-semibold">Height:</span> {player.height}
-                        </div>
-                        <div>
-                          <span className="font-semibold">Weight:</span> {player.weight}
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+              <div className="mb-8">
+                <Card>
+                  <CardContent className="p-0">
+                    <ScrollArea className="h-[60vh] rounded-md">
+                      <Table>
+                        <TableCaption>Rossview Hawks Football Roster 2025</TableCaption>
+                        <TableHeader>
+                          <TableRow className="bg-gray-100">
+                            <TableHead className="w-12 text-center">#</TableHead>
+                            <TableHead>Name</TableHead>
+                            <TableHead>Position</TableHead>
+                            <TableHead>Grade</TableHead>
+                            <TableHead>Height</TableHead>
+                            <TableHead>Weight</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {players.map((player) => (
+                            <TableRow key={player.id}>
+                              <TableCell className="font-medium text-center bg-rossview-red text-white">
+                                {player.number}
+                              </TableCell>
+                              <TableCell className="font-medium">{player.name}</TableCell>
+                              <TableCell>{player.position}</TableCell>
+                              <TableCell>{player.grade}</TableCell>
+                              <TableCell>{player.height}</TableCell>
+                              <TableCell>{player.weight}</TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </ScrollArea>
+                  </CardContent>
+                </Card>
               </div>
 
               <div className="text-center">
