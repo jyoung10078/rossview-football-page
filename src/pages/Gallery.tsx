@@ -9,6 +9,14 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import captainsHandshake from "@/assets/gallery-images/captains_handshake.png";
+import coltonSigning from "@/assets/gallery-images/colton_signing.png";
+import divingCatch from "@/assets/gallery-images/diving_catch.png";
+import gameRaining from "@/assets/gallery-images/game_raining.png";
+import koleSigning from "@/assets/gallery-images/kole_signing.png";
+import Oline from "@/assets/gallery-images/Oline.png";
+import qbThrowing from "@/assets/gallery-images/qb_throwing.png";
+import rossviewRunning from "@/assets/gallery-images/rossview-running.png";
 
 const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
@@ -17,74 +25,80 @@ const Gallery = () => {
   const galleryImages = [
     {
       id: 1,
-      src: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      alt: "Football game action",
+      src: captainsHandshake,
+      alt: "Captains Ready for Handshake",
       category: "game"
     },
     {
       id: 2,
-      src: "https://images.unsplash.com/photo-1500673922987-e212871fec22?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      alt: "Team huddle",
+      src: coltonSigning,
+      alt: "Colton on Signing Day",
       category: "team"
     },
     {
       id: 3,
-      src: "https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      alt: "Practice session",
-      category: "practice"
-    },
-    {
-      id: 4,
-      src: "https://images.unsplash.com/photo-1615729947596-a598e5de0ab3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      alt: "Stadium view",
-      category: "facility"
-    },
-    {
-      id: 5,
-      src: "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      alt: "Touchdown celebration",
+      src: divingCatch,
+      alt: "Diving Catch",
       category: "game"
     },
     {
-      id: 6,
-      src: "https://images.unsplash.com/photo-1527861518759-9ae9a7217afb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", 
-      alt: "Football equipment",
-      category: "equipment"
+      id: 4,
+      src: gameRaining,
+      alt: "Playing in the Rain",
+      category: "game"
     },
     {
-      id: 7,
-      src: "https://images.unsplash.com/photo-1580151312338-e7c5315bbbf1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      alt: "Team meeting",
+      id: 5,
+      src: koleSigning,
+      alt: "Kole on Signing Day",
       category: "team"
     },
     {
+      id: 6,
+      src: Oline, 
+      alt: "Offensive Line",
+      category: "game"
+    },
+    {
+      id: 7,
+      src: qbThrowing,
+      alt: "QB Throwing",
+      category: "game"
+    },
+    {
       id: 8,
-      src: "https://images.unsplash.com/photo-1568185518838-3300c90c9170?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      alt: "Pregame warmup",
-      category: "practice"
+      src: rossviewRunning,
+      alt: "Running up the Score",
+      category: "game"
     },
     {
       id: 9,
-      src: "https://images.unsplash.com/photo-1591647862759-bdf6ef08ae78?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      alt: "Football helmet",
-      category: "equipment"
+      src: divingCatch,
+      alt: "Wide Receiver Diving Catch",
+      category: "game"
     },
     {
       id: 10,
-      src: "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      alt: "Game day atmosphere",
+      src: Oline,
+      alt: "Offensive Line",
       category: "game"
     },
     {
       id: 11,
-      src: "https://images.unsplash.com/photo-1566577739112-5180d4bf9390?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      alt: "Team photo",
+      src: captainsHandshake,
+      alt: "Team Captains Handshake",
       category: "team"
     },
     {
       id: 12,
-      src: "https://images.unsplash.com/photo-1517009323773-b935cc4c15da?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      alt: "Coaching staff",
+      src: gameRaining,
+      alt: "Playing in the Rain",
+      category: "game"
+    },
+    {
+      id: 13,
+      src: coltonSigning,
+      alt: "Colton on Signing Day",
       category: "team"
     }
   ];
