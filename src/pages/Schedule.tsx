@@ -204,20 +204,18 @@ const Schedule = () => {
                           </div>
                         </div>
                         
-                        {(game.isHomecoming || game.isSeniorNight) && (
-                          <div className="mt-3">
-                            {game.isHomecoming && (
+                        <div className="mt-3">
+                            {Boolean(game.isHomecoming) && (
                               <span className="inline-block bg-rossview-red text-white text-sm py-1 px-3 rounded-full mr-2">
                                 Homecoming Game
                               </span>
                             )}
-                            {game.isSeniorNight && (
+                            {Boolean(game.isSeniorNight) && (
                               <span className="inline-block bg-rossview-red text-white text-sm py-1 px-3 rounded-full">
                                 Senior Night
                               </span>
                             )}
                           </div>
-                        )}
                       </div>
                       
                       <div className="mt-4 md:mt-0">

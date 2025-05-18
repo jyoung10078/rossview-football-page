@@ -259,7 +259,7 @@ const Team = () => {
                         <img 
                           src={coach.image} 
                           alt={coach.name}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-cover object-top"
                         />
                       </div>
                       <CardContent className="p-6">

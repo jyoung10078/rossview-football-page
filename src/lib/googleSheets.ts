@@ -115,7 +115,7 @@ function parseCSV<T>(csv: string, tabName?: string): T[] {
     return [];
   }
   
-  const headers = parseCSVLine(lines[0]);
+  const headers = parseCSVLine(lines[0]).map(header => header.trim());
   console.log(`CSV headers for ${tabName || 'unknown tab'}: ${headers.join(', ')}`);
   
   return lines.slice(1).map((line) => {
@@ -125,12 +125,15 @@ function parseCSV<T>(csv: string, tabName?: string): T[] {
     const entry: Record<string, any> = {};
     
     headers.forEach((header, index) => {
+      console.log(`Parsing header "${header}" (type:${typeof header}), with value "${values[index]} (type:${typeof values[index]})"`);
       let value = values[index] || '';
       
       // Handle boolean values for specific fields
-      if ((header === 'isHomecoming' || header === 'isSeniorNight') && 
-          (value.toLowerCase() === 'true' || value.toLowerCase() === 'false' || value === '1' || value === '0' || value === 'yes' || value === 'no')) {
-        entry[header] = ['true', '1', 'yes'].includes(value.toLowerCase());
+      if (header === 'isHomecoming' || header === 'isSeniorNight') {
+        // Convert numeric values to booleans (1 = true, 0 = false)
+        const trimmedValue = value.trim();
+        entry[header] = trimmedValue === "1" || trimmedValue.toLowerCase() === "true";
+        console.log(`Parsed ${header} value "${value}" (type: ${typeof value}) as ${entry[header]}`);
       }
       // Handle numeric values but prevent type conversion for fields that should remain as strings
       else if (!isNaN(Number(value)) && value.trim() !== '' && 

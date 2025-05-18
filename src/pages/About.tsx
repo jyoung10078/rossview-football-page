@@ -235,7 +235,7 @@ const About = () => {
               <img 
                 src="https://images.unsplash.com/photo-1544465544-1b71aee9dfa3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                 alt="Community service" 
-                className="absolute inset-0 w-full h-full object-cover rounded-lg"
+                className="absolute inset-0 w-full h-full object-cover object-top rounded-lg"
               />
             </div>
           </div>
