@@ -7,6 +7,12 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BackgroundImage from "@/assets/rossview-running.png";
 
+// Gallery Images
+import Oline from "@/assets/gallery-images/Oline.png";
+import qbThrowing from "@/assets/gallery-images/qb_throwing.png";
+import gameRaining from "@/assets/gallery-images/game_raining.png";
+import captainsHandshake from "@/assets/gallery-images/captains_handshake.png";
+
 const Index = () => {
   // We'll use placeholders for data that would normally come from a database
   const upcomingGames = [
@@ -250,29 +256,29 @@ const Index = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             <div className="aspect-square overflow-hidden">
               <img 
-                src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                alt="Football game action" 
+                src={Oline}
+                alt="Offensive line in action" 
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
               />
             </div>
             <div className="aspect-square overflow-hidden">
               <img 
-                src="https://images.unsplash.com/photo-1500673922987-e212871fec22?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                alt="Team huddle" 
+                src={qbThrowing} 
+                alt="QB throwing a pass" 
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
               />
             </div>
             <div className="aspect-square overflow-hidden">
               <img 
-                src="https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                alt="Practice session" 
+                src={gameRaining} 
+                alt="Playing in the rain" 
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
               />
             </div>
             <div className="aspect-square overflow-hidden">
               <img 
-                src="https://images.unsplash.com/photo-1615729947596-a598e5de0ab3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                alt="Stadium view" 
+                src={captainsHandshake}
+                alt="Captians handshake before the game" 
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
               />
             </div>

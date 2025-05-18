@@ -4,6 +4,8 @@ import { Trophy, Users, BookOpen, Heart, Award } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
+import captainsHandshake from "@/assets/gallery-images/captains_handshake.png";
+
 const About = () => {
   // Mock data for accomplishments
   const accomplishments = [
@@ -43,7 +45,7 @@ const About = () => {
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat" 
             style={{ 
-              backgroundImage: "url('https://images.unsplash.com/photo-1580151312338-e7c5315bbbf1?ixlib=rb-4.0.3')", 
+              backgroundImage: `url(${captainsHandshake})`, 
               backgroundPosition: "center 30%",
               filter: "brightness(0.6)"
             }}

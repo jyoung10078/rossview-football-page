@@ -11,6 +11,8 @@ import { useToast } from "@/components/ui/use-toast";
 import { GOOGLE_SHEET_ID, SHEET_TABS } from "@/config";
 import React from "react";
 
+import gameRaining from "@/assets/gallery-images/game_raining.png";
+
 const Team = () => {
   const { toast } = useToast();
   
@@ -150,7 +152,7 @@ const Team = () => {
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat" 
             style={{ 
-              backgroundImage: "url('https://images.unsplash.com/photo-1577471488278-16eec37ffcc2?ixlib=rb-4.0.3')", 
+              backgroundImage: `url(${gameRaining})`, 
               backgroundPosition: "center 30%",
               filter: "brightness(0.6)"
             }}

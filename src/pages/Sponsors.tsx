@@ -136,7 +136,7 @@ const Sponsors = () => {
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat" 
             style={{ 
-              backgroundImage: "url('https://images.unsplash.com/photo-1556742205-e10c9486e506?ixlib=rb-4.0.3')", 
+              backgroundImage: "", 
               backgroundPosition: "center 30%",
               filter: "brightness(0.6)"
             }}

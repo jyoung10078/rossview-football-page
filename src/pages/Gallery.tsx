@@ -131,8 +131,8 @@ const Gallery = () => {
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat" 
             style={{ 
-              backgroundImage: "url('https://images.unsplash.com/photo-1560272564-c83b66b1ad12?ixlib=rb-4.0.3')", 
-              backgroundPosition: "center 30%",
+              backgroundImage: `url(${qbThrowing})`, 
+              backgroundPosition: "top",
               filter: "brightness(0.6)"
             }}
           />
@@ -243,9 +243,9 @@ const Gallery = () => {
           <p className="text-lg text-gray-700 max-w-2xl mx-auto mb-8">
             Parents, fans, and students who have great Hawks football photos are encouraged to share them with us for possible inclusion in our gallery.
           </p>
-          <Button className="bg-rossview-red hover:bg-red-800 text-white">
-            Submit Your Photos
-          </Button>
+          <p className="text-lg text-gray-700 max-w-2xl mx-auto mb-8">
+            Pleace email your photos to <a href="mailto:RossviewHighSchoolFootball@rossview.edu" className="text-rossview-red hover:underline">RossviewFootball@rossview.edu</a>.
+          </p>
         </div>
       </section>
 

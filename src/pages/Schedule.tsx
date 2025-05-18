@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import { useGoogleSheetData, Game } from "@/lib/googleSheets";
 import { useToast } from "@/components/ui/use-toast";
 import { GOOGLE_SHEET_ID, SHEET_TABS } from "@/config";
+import Oline from "@/assets/gallery-images/Oline.png";
 
 const Schedule = () => {
   const { toast } = useToast();
@@ -134,7 +135,7 @@ const Schedule = () => {
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat" 
             style={{ 
-              backgroundImage: "url('https://images.unsplash.com/photo-1571034756200-5f5cb2ba40a5?ixlib=rb-4.0.3')", 
+              backgroundImage: `url(${Oline})`, 
               backgroundPosition: "center 30%",
               filter: "brightness(0.6)"
             }}
