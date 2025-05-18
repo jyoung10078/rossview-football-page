@@ -35,16 +35,27 @@ export interface Game {
 
 // Function to fetch and parse data from a published Google Sheet
 export async function fetchGoogleSheetData<T>(sheetId: string, tabName: string): Promise<T[]> {
+  // Get the gid (sheet ID) based on tab name
+  const gidMap: Record<string, string> = {
+    [SHEET_TABS.PLAYERS]: "0",       // First sheet typically has gid=0
+    [SHEET_TABS.COACHES]: "1733887076",       // Second sheet typically has gid=1
+    [SHEET_TABS.GAMES]: "573126814"          // Third sheet typically has gid=2
+  };
+  
+  const gid = gidMap[tabName] || "0";
+  
   // Try multiple URL formats since we're not sure what format the user has shared
   const urls = [
-    // Standard CSV export URL
-    `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tabName)}`,
-    // Alternative format for published sheets
-    `https://docs.google.com/spreadsheets/d/e/${sheetId}/pub?gid=0&single=true&output=csv&sheet=${encodeURIComponent(tabName)}`,
-    // Another alternative format
-    `https://docs.google.com/spreadsheets/d/e/${sheetId}/pubhtml?gid=0&single=true&output=csv&sheet=${encodeURIComponent(tabName)}`,
-    // Try without specifying sheet
-    `https://docs.google.com/spreadsheets/d/e/${sheetId}/pub?output=csv`
+    // // Standard CSV export URL
+    // `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tabName)}`,
+    // // Alternative format for published sheets with gid
+    // `https://docs.google.com/spreadsheets/d/e/${sheetId}/pub?gid=${gid}&single=true&output=csv`,
+    // // Another alternative format with gid
+    //`https://docs.google.com/spreadsheets/d/e/${sheetId}/pubhtml?gid=${gid}&single=true&output=csv`,
+    // Direct export format
+    //`https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${gid}`,
+    // Try without specifying sheet (fallback)
+    `https://docs.google.com/spreadsheets/d/e/${sheetId}/pub?output=csv&gid=${gid}`,
   ];
   
   let lastError: Error | null = null;
