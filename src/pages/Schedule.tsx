@@ -38,6 +38,7 @@ const Schedule = () => {
       date: "September 1, 2025",
       time: "7:00 PM",
       result: null,
+      outcome: null,
       isHomecoming: false,
       isSeniorNight: false
     },
@@ -48,6 +49,7 @@ const Schedule = () => {
       date: "September 8, 2025",
       time: "7:00 PM",
       result: null,
+      outcome: null,
       isHomecoming: false,
       isSeniorNight: false
     },
@@ -58,6 +60,7 @@ const Schedule = () => {
       date: "September 15, 2025",
       time: "7:00 PM",
       result: null,
+      outcome: null,
       isHomecoming: false,
       isSeniorNight: false
     },
@@ -68,6 +71,7 @@ const Schedule = () => {
       date: "September 22, 2025",
       time: "7:00 PM",
       result: null,
+      outcome: null,
       isHomecoming: false,
       isSeniorNight: false
     },
@@ -78,6 +82,7 @@ const Schedule = () => {
       date: "October 6, 2025",
       time: "7:00 PM",
       result: null,
+      outcome: null,
       isHomecoming: true,
       isSeniorNight: false
     },
@@ -88,6 +93,7 @@ const Schedule = () => {
       date: "October 13, 2025",
       time: "7:00 PM",
       result: null,
+      outcome: null,
       isHomecoming: false,
       isSeniorNight: false
     },
@@ -98,6 +104,7 @@ const Schedule = () => {
       date: "October 20, 2025",
       time: "7:00 PM",
       result: null,
+      outcome: null,
       isHomecoming: false,
       isSeniorNight: true
     },
@@ -108,6 +115,7 @@ const Schedule = () => {
       date: "October 27, 2025",
       time: "7:00 PM",
       result: null,
+      outcome: null,
       isHomecoming: false,
       isSeniorNight: false
     }
@@ -216,6 +224,17 @@ const Schedule = () => {
                               </span>
                             )}
                           </div>
+                      </div>
+
+                      <div className="mt-4 md:mt-0">
+                        {game.outcome && (
+                                <div className={`text-sm font-medium mt-1 ${
+                                  game.outcome === 'Win' ? 'text-green-600' : 
+                                  game.outcome === 'Loss' ? 'text-red-600' : 'text-gray-600'
+                                }`}>
+                                  {game.outcome}
+                                </div>
+                              )}
                       </div>
                       
                       <div className="mt-4 md:mt-0">

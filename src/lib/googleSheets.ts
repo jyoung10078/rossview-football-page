@@ -29,6 +29,7 @@ export interface Game {
   date: string;
   time: string;
   result: string | null;
+  outcome: string | null;
   isHomecoming: boolean;
   isSeniorNight: boolean;
 }
@@ -135,6 +136,12 @@ function parseCSV<T>(csv: string, tabName?: string): T[] {
         entry[header] = trimmedValue === "1" || trimmedValue.toLowerCase() === "true";
         console.log(`Parsed ${header} value "${value}" (type: ${typeof value}) as ${entry[header]}`);
       }
+
+      // Setting a default image URL if the image field is empty
+      else if (header === 'image' && value.length < 10) {
+        entry[header] = "https://images.unsplash.com/photo-1566577739112-5180d4bf9390?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80";
+      }
+
       // Handle numeric values but prevent type conversion for fields that should remain as strings
       else if (!isNaN(Number(value)) && value.trim() !== '' && 
                !['height', 'weight', 'grade', 'result', 'date', 'time', 'position'].includes(header)) {
@@ -145,9 +152,14 @@ function parseCSV<T>(csv: string, tabName?: string): T[] {
       }
     });
     
-    // Special handling for result field in Games tab
-    if (tabName === SHEET_TABS.GAMES && entry.result === '') {
-      entry.result = null;
+    // Special handling for result and outcome fields in Games tab
+    if (tabName === SHEET_TABS.GAMES) {
+      if (entry.result === '') {
+        entry.result = null;
+      }
+      if (entry.outcome === '') {
+        entry.outcome = null;
+      }
     }
     
     return entry as T;
