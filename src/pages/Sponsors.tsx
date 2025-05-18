@@ -5,6 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { Handshake, Gift, Award } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import cac_logo from "@/assets/cac-logo.png";
+import topmentalgame_logo from "@/assets/topmentalgame-logo.png";
 
 const Sponsors = () => {
   // Mock data for sponsors
@@ -12,15 +14,15 @@ const Sponsors = () => {
     platinum: [
       {
         id: 1,
-        name: "Clarksville Auto Group",
-        logo: "https://images.unsplash.com/photo-1560179707-f14e90ef3623?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-        website: "https://example.com"
+        name: "Clarksville Athletic Club",
+        logo: cac_logo,
+        website: "https://clarksvilleathleticclub.com"
       },
       {
         id: 2,
-        name: "First Community Bank",
-        logo: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-        website: "https://example.com"
+        name: "Top Mental Game",
+        logo: topmentalgame_logo,
+        website: "https://topmentalgame.com"
       }
     ],
     gold: [

@@ -83,7 +83,7 @@ const Index = () => {
                 <Link to="/schedule" className="text-white">View Schedule</Link>
               </Button>
               <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/20">
-                <Link to="/team" className="text-white">Meet The Team</Link>
+                <Link to="/team" className="text-black">Meet The Team</Link>
               </Button>
             </div>
           </div>
