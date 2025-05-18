@@ -1,13 +1,36 @@
-
+import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Calendar, MapPin, Clock, Trophy, CalendarDays } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { useGoogleSheetData, Game } from "@/lib/googleSheets";
+import { useToast } from "@/components/ui/use-toast";
+import { GOOGLE_SHEET_ID } from "@/config";
 
 const Schedule = () => {
-  // Mock data for game schedule
-  const games = [
+  const { toast } = useToast();
+
+  // Fetch games data from Google Sheet
+  const {
+    data: games,
+    loading: gamesLoading,
+    error: gamesError
+  } = useGoogleSheetData<Game>(GOOGLE_SHEET_ID, "Games");
+
+  // Show error notifications if there are issues loading data
+  React.useEffect(() => {
+    if (gamesError) {
+      toast({
+        title: "Error loading schedule",
+        description: gamesError.message,
+        variant: "destructive"
+      });
+    }
+  }, [gamesError, toast]);
+
+  // Fallback games data in case of error or for development
+  const fallbackGames: Game[] = [
     {
       id: 1,
       opponent: "Clarksville High School",
@@ -90,6 +113,9 @@ const Schedule = () => {
     }
   ];
 
+  // Use actual data if available, otherwise fall back to mock data
+  const displayedGames = games.length > 0 ? games : fallbackGames;
+
   return (
     <>
       <Navbar />
@@ -142,70 +168,76 @@ const Schedule = () => {
             </div>
           </div>
           
-          <div className="space-y-6">
-            {games.map(game => (
-              <Card 
-                key={game.id} 
-                className={`overflow-hidden border-l-4 ${
-                  game.location === "Home" 
-                    ? "border-l-green-500" 
-                    : "border-l-blue-500"
-                }`}
-              >
-                <CardContent className="p-6">
-                  <div className="md:flex md:justify-between md:items-center">
-                    <div>
-                      <div className="text-2xl font-bold mb-2">
-                        {game.location === "Home" ? "Rossview vs " : "Rossview at "} {game.opponent}
-                      </div>
-                      <div className="flex flex-wrap gap-y-2 gap-x-6 text-gray-700">
-                        <div className="flex items-center">
-                          <Calendar className="h-4 w-4 mr-2 text-rossview-red" />
-                          {game.date}
+          {gamesLoading ? (
+            <div className="flex justify-center items-center p-12">
+              <div className="animate-spin h-12 w-12 border-4 border-rossview-red border-t-transparent rounded-full"></div>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {displayedGames.map(game => (
+                <Card 
+                  key={game.id} 
+                  className={`overflow-hidden border-l-4 ${
+                    game.location === "Home" 
+                      ? "border-l-green-500" 
+                      : "border-l-blue-500"
+                  }`}
+                >
+                  <CardContent className="p-6">
+                    <div className="md:flex md:justify-between md:items-center">
+                      <div>
+                        <div className="text-2xl font-bold mb-2">
+                          {game.location === "Home" ? "Rossview vs " : "Rossview at "} {game.opponent}
                         </div>
-                        <div className="flex items-center">
-                          <Clock className="h-4 w-4 mr-2 text-rossview-red" />
-                          {game.time}
+                        <div className="flex flex-wrap gap-y-2 gap-x-6 text-gray-700">
+                          <div className="flex items-center">
+                            <Calendar className="h-4 w-4 mr-2 text-rossview-red" />
+                            {game.date}
+                          </div>
+                          <div className="flex items-center">
+                            <Clock className="h-4 w-4 mr-2 text-rossview-red" />
+                            {game.time}
+                          </div>
+                          <div className="flex items-center">
+                            <MapPin className="h-4 w-4 mr-2 text-rossview-red" />
+                            {game.location === "Home" ? "Rossview Stadium" : `${game.opponent} Field`}
+                          </div>
                         </div>
-                        <div className="flex items-center">
-                          <MapPin className="h-4 w-4 mr-2 text-rossview-red" />
-                          {game.location === "Home" ? "Rossview Stadium" : `${game.opponent} Field`}
-                        </div>
+                        
+                        {(game.isHomecoming || game.isSeniorNight) && (
+                          <div className="mt-3">
+                            {game.isHomecoming && (
+                              <span className="inline-block bg-rossview-red text-white text-sm py-1 px-3 rounded-full mr-2">
+                                Homecoming Game
+                              </span>
+                            )}
+                            {game.isSeniorNight && (
+                              <span className="inline-block bg-rossview-red text-white text-sm py-1 px-3 rounded-full">
+                                Senior Night
+                              </span>
+                            )}
+                          </div>
+                        )}
                       </div>
                       
-                      {(game.isHomecoming || game.isSeniorNight) && (
-                        <div className="mt-3">
-                          {game.isHomecoming && (
-                            <span className="inline-block bg-rossview-red text-white text-sm py-1 px-3 rounded-full mr-2">
-                              Homecoming Game
-                            </span>
-                          )}
-                          {game.isSeniorNight && (
-                            <span className="inline-block bg-rossview-red text-white text-sm py-1 px-3 rounded-full">
-                              Senior Night
-                            </span>
-                          )}
-                        </div>
-                      )}
+                      <div className="mt-4 md:mt-0">
+                        {game.result ? (
+                          <div className="bg-gray-100 py-3 px-6 rounded-lg text-center">
+                            <div className="text-sm text-gray-600">Final</div>
+                            <div className="text-xl font-bold">{game.result}</div>
+                          </div>
+                        ) : (
+                          <Button variant="outline" className="border-rossview-red text-rossview-red hover:bg-rossview-red hover:text-white">
+                            Add to Calendar
+                          </Button>
+                        )}
+                      </div>
                     </div>
-                    
-                    <div className="mt-4 md:mt-0">
-                      {game.result ? (
-                        <div className="bg-gray-100 py-3 px-6 rounded-lg text-center">
-                          <div className="text-sm text-gray-600">Final</div>
-                          <div className="text-xl font-bold">{game.result}</div>
-                        </div>
-                      ) : (
-                        <Button variant="outline" className="border-rossview-red text-rossview-red hover:bg-rossview-red hover:text-white">
-                          Add to Calendar
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       </section>
       

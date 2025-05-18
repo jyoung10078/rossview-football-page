@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -7,34 +6,49 @@ import { Users, Trophy, Award, Table as TableIcon } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { useGoogleSheetData, Player, Coach } from "@/lib/googleSheets";
+import { useToast } from "@/components/ui/use-toast";
+import { GOOGLE_SHEET_ID } from "@/config";
+import React from "react";
 
 const Team = () => {
-  // Mock data for team roster
-  const coaches = [
-    {
-      id: 1,
-      name: "Coach Robert Wilson",
-      position: "Head Coach",
-      bio: "Coach Wilson has led the Hawks program since 2018. With over 20 years of coaching experience, he focuses on developing well-rounded student-athletes.",
-      image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
-    },
-    {
-      id: 2,
-      name: "Coach Michael Thomas",
-      position: "Offensive Coordinator",
-      bio: "Coach Thomas joined the Hawks in 2019. He previously coached at the collegiate level and brings innovative offensive strategies to the team.",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
-    },
-    {
-      id: 3,
-      name: "Coach David Martinez",
-      position: "Defensive Coordinator",
-      bio: "Coach Martinez has been with Rossview for 5 seasons. His defensive schemes have helped the Hawks become one of the top defensive teams in the region.",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
-    },
-  ];
+  const { toast } = useToast();
+  
+  // Fetch players data from Google Sheet
+  const { 
+    data: players,
+    loading: playersLoading,
+    error: playersError
+  } = useGoogleSheetData<Player>(GOOGLE_SHEET_ID, "Players");
+  
+  // Fetch coaches data from Google Sheet
+  const {
+    data: coaches,
+    loading: coachesLoading,
+    error: coachesError
+  } = useGoogleSheetData<Coach>(GOOGLE_SHEET_ID, "Coaches");
 
-  const players = [
+  // Show error notifications if there are issues loading data
+  React.useEffect(() => {
+    if (playersError) {
+      toast({
+        title: "Error loading players",
+        description: playersError.message,
+        variant: "destructive"
+      });
+    }
+    
+    if (coachesError) {
+      toast({
+        title: "Error loading coaches",
+        description: coachesError.message,
+        variant: "destructive"
+      });
+    }
+  }, [playersError, coachesError, toast]);
+
+  // Fallback players data in case of error or for development
+  const fallbackPlayers: Player[] = [
     {
       id: 1,
       name: "Jackson Smith",
@@ -97,6 +111,35 @@ const Team = () => {
     }
   ];
 
+  // Fallback coaches data in case of error or for development
+  const fallbackCoaches: Coach[] = [
+    {
+      id: 1,
+      name: "Coach Robert Wilson",
+      position: "Head Coach",
+      bio: "Coach Wilson has led the Hawks program since 2018. With over 20 years of coaching experience, he focuses on developing well-rounded student-athletes.",
+      image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
+    },
+    {
+      id: 2,
+      name: "Coach Michael Thomas",
+      position: "Offensive Coordinator",
+      bio: "Coach Thomas joined the Hawks in 2019. He previously coached at the collegiate level and brings innovative offensive strategies to the team.",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
+    },
+    {
+      id: 3,
+      name: "Coach David Martinez",
+      position: "Defensive Coordinator",
+      bio: "Coach Martinez has been with Rossview for 5 seasons. His defensive schemes have helped the Hawks become one of the top defensive teams in the region.",
+      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
+    },
+  ];
+
+  // Use actual data if available, otherwise fall back to mock data
+  const displayedPlayers = players.length > 0 ? players : fallbackPlayers;
+  const displayedCoaches = coaches.length > 0 ? coaches : fallbackCoaches;
+
   return (
     <>
       <Navbar />
@@ -151,33 +194,39 @@ const Team = () => {
                 <Card>
                   <CardContent className="p-0">
                     <ScrollArea className="h-[60vh] rounded-md">
-                      <Table>
-                        <TableCaption>Rossview Hawks Football Roster 2025</TableCaption>
-                        <TableHeader>
-                          <TableRow className="bg-gray-100">
-                            <TableHead className="w-12 text-center">#</TableHead>
-                            <TableHead>Name</TableHead>
-                            <TableHead>Position</TableHead>
-                            <TableHead>Grade</TableHead>
-                            <TableHead>Height</TableHead>
-                            <TableHead>Weight</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {players.map((player) => (
-                            <TableRow key={player.id}>
-                              <TableCell className="font-medium text-center bg-rossview-red text-white">
-                                {player.number}
-                              </TableCell>
-                              <TableCell className="font-medium">{player.name}</TableCell>
-                              <TableCell>{player.position}</TableCell>
-                              <TableCell>{player.grade}</TableCell>
-                              <TableCell>{player.height}</TableCell>
-                              <TableCell>{player.weight}</TableCell>
+                      {playersLoading ? (
+                        <div className="flex justify-center items-center p-8">
+                          <div className="animate-spin h-8 w-8 border-4 border-rossview-red border-t-transparent rounded-full"></div>
+                        </div>
+                      ) : (
+                        <Table>
+                          <TableCaption>Rossview Hawks Football Roster 2025</TableCaption>
+                          <TableHeader>
+                            <TableRow className="bg-gray-100">
+                              <TableHead className="w-12 text-center">#</TableHead>
+                              <TableHead>Name</TableHead>
+                              <TableHead>Position</TableHead>
+                              <TableHead>Grade</TableHead>
+                              <TableHead>Height</TableHead>
+                              <TableHead>Weight</TableHead>
                             </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
+                          </TableHeader>
+                          <TableBody>
+                            {displayedPlayers.map((player) => (
+                              <TableRow key={player.id}>
+                                <TableCell className="font-medium text-center bg-rossview-red text-white">
+                                  {player.number}
+                                </TableCell>
+                                <TableCell className="font-medium">{player.name}</TableCell>
+                                <TableCell>{player.position}</TableCell>
+                                <TableCell>{player.grade}</TableCell>
+                                <TableCell>{player.height}</TableCell>
+                                <TableCell>{player.weight}</TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      )}
                     </ScrollArea>
                   </CardContent>
                 </Card>
@@ -198,24 +247,30 @@ const Team = () => {
                 </p>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {coaches.map(coach => (
-                  <Card key={coach.id} className="overflow-hidden">
-                    <div className="relative h-64">
-                      <img 
-                        src={coach.image} 
-                        alt={coach.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <CardContent className="p-6">
-                      <h3 className="text-xl font-bold mb-1">{coach.name}</h3>
-                      <div className="text-rossview-red font-medium mb-3">{coach.position}</div>
-                      <p className="text-gray-700">{coach.bio}</p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+              {coachesLoading ? (
+                <div className="flex justify-center items-center p-8">
+                  <div className="animate-spin h-8 w-8 border-4 border-rossview-red border-t-transparent rounded-full"></div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  {displayedCoaches.map(coach => (
+                    <Card key={coach.id} className="overflow-hidden">
+                      <div className="relative h-64">
+                        <img 
+                          src={coach.image} 
+                          alt={coach.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <CardContent className="p-6">
+                        <h3 className="text-xl font-bold mb-1">{coach.name}</h3>
+                        <div className="text-rossview-red font-medium mb-3">{coach.position}</div>
+                        <p className="text-gray-700">{coach.bio}</p>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
             </TabsContent>
           </Tabs>
         </div>
