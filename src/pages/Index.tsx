@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { Calendar, Flag, MapPin, Users, BookOpen } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import BackgroundImage from "@/assets/rossview-running.png";
 
 const Index = () => {
   // We'll use placeholders for data that would normally come from a database
@@ -63,7 +64,7 @@ const Index = () => {
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat animate-hero-image" 
             style={{ 
-              backgroundImage: "url('https://images.unsplash.com/photo-1486739985386-d4fae04ca6f7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')", 
+              backgroundImage: `url(${BackgroundImage})`, 
               backgroundPosition: "center 30%",
               filter: "brightness(0.65)"
             }}
@@ -278,7 +279,7 @@ const Index = () => {
           </div>
           
           <div className="text-center mt-8">
-            <Button variant="outline" className="border-white text-white hover:bg-white/10">
+            <Button variant="outline" className="border-white text-rossview-red hover:bg-white/10">
               <Link to="/gallery">View Full Gallery</Link>
             </Button>
           </div>
