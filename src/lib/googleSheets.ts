@@ -67,16 +67,19 @@ function parseCSV<T>(csv: string): T[] {
     headers.forEach((header, index) => {
       let value = values[index] || '';
       
-      // Try to parse boolean values
-      if (value.toLowerCase() === 'true') value = true;
-      else if (value.toLowerCase() === 'false') value = false;
-      
-      // Try to parse numeric values
-      else if (!isNaN(Number(value)) && value.trim() !== '') {
-        value = Number(value);
+      // Handle boolean values for specific fields
+      if ((header === 'isHomecoming' || header === 'isSeniorNight') && 
+          (value.toLowerCase() === 'true' || value.toLowerCase() === 'false')) {
+        entry[header] = value.toLowerCase() === 'true';
       }
-      
-      entry[header] = value;
+      // Handle numeric values but prevent type conversion for fields that should remain as strings
+      else if (!isNaN(Number(value)) && value.trim() !== '' && 
+               !['height', 'weight', 'grade'].includes(header)) {
+        entry[header] = Number(value);
+      }
+      else {
+        entry[header] = value;
+      }
     });
     
     return entry as T;
