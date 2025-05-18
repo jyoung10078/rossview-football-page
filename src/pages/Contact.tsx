@@ -33,10 +33,6 @@ const Contact = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSelectChange = (value: string) => {
-    setFormData(prev => ({ ...prev, subject: value }));
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -54,6 +50,23 @@ const Contact = () => {
         title: "Message Sent",
         description: "Thank you for your message. We will respond within 2 business days.",
       });
+
+      // Sending message to Coaching Staff
+      emailjs.sendForm(
+        import.meta.env.VITE_EMAIL_SERVICE_ID || 'your_service_id',
+        import.meta.env.VITE_MESSAGE_PASS_TEMPLATE_ID || 'your_template_id',
+        form.current as HTMLFormElement,
+        import.meta.env.VITE_EMAIL_PUBLIC_KEY || 'your_public_key'
+      )
+      .catch((error) => {
+        console.error('Failed to send email:', error);
+        toast({
+          title: "Error",
+          description: "Failed to send your message. Please try again later.",
+          variant: "destructive"
+        });
+      }
+      )
       
       // Reset form
       setFormData({
@@ -220,21 +233,14 @@ const Contact = () => {
                   
                   <div className="space-y-2">
                     <Label htmlFor="subject">Subject</Label>
-                    <Select 
-                      value={formData.subject} 
-                      onValueChange={handleSelectChange}
-                    >
-                      <SelectTrigger id="subject">
-                        <SelectValue placeholder="Select a subject" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="general">General Inquiry</SelectItem>
-                        <SelectItem value="tickets">Ticket Information</SelectItem>
-                        <SelectItem value="sponsorship">Sponsorship Opportunities</SelectItem>
-                        <SelectItem value="volunteer">Volunteer Opportunities</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <Input 
+                      id="subject" 
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleInputChange}
+                      placeholder="Subject of your message" 
+                      required 
+                    />
                   </div>
                   
                   <div className="space-y-2">
