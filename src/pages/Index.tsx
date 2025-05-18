@@ -64,7 +64,7 @@ const Index = () => {
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat animate-hero-image" 
             style={{ 
-              backgroundImage: "url('https://images.unsplash.com/photo-1605810230434-7631ac76ec81?ixlib=rb-4.0.3')", 
+              backgroundImage: "url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?ixlib=rb-4.0.3')", 
               backgroundPosition: "center 30%",
               filter: "brightness(0.6)"
             }}

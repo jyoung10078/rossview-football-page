@@ -8,7 +8,11 @@
  * 1. Create a Google Sheet with tabs named "Players", "Coaches", and "Games"
  * 2. Each sheet should have columns matching the data types in lib/googleSheets.ts
  * 3. Publish the sheet to the web via File > Publish to the web > Publish
- * 4. Copy the Sheet ID from the URL and paste it below
+ *    - Select entire document
+ *    - Choose Web page or CSV format
+ *    - Click "Publish"
+ * 4. Set sharing permissions to "Anyone with the link can view"
+ * 5. Copy the Sheet ID from the URL and paste it below
  * 
  * Format of Google Sheets URL: https://docs.google.com/spreadsheets/d/{SHEET_ID}/edit
  */

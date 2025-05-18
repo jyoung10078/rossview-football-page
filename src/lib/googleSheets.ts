@@ -39,13 +39,22 @@ export async function fetchGoogleSheetData<T>(sheetId: string, tabName: string):
   const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tabName)}`;
   
   try {
-    const response = await fetch(url);
+    console.log(`Fetching data from sheet: ${sheetId}, tab: ${tabName}`);
+    const response = await fetch(url, {
+      // Add these headers to help with CORS issues
+      headers: {
+        'Accept': 'text/csv,text/plain;q=0.9',
+        'Cache-Control': 'no-cache'
+      }
+    });
     
     if (!response.ok) {
+      console.error(`Failed to fetch data: ${response.status} ${response.statusText}`);
       throw new Error(`Failed to fetch data: ${response.status}`);
     }
     
     const csvText = await response.text();
+    console.log(`Received data length: ${csvText.length} characters`);
     return parseCSV<T>(csvText);
   } catch (error) {
     console.error("Error fetching Google Sheet data:", error);
@@ -56,7 +65,13 @@ export async function fetchGoogleSheetData<T>(sheetId: string, tabName: string):
 // Parse CSV data into JavaScript objects
 function parseCSV<T>(csv: string): T[] {
   const lines = csv.split('\n');
+  if (lines.length < 2) {
+    console.warn("CSV data contains less than 2 lines, may be empty");
+    return [];
+  }
+  
   const headers = parseCSVLine(lines[0]);
+  console.log(`CSV headers: ${headers.join(', ')}`);
   
   return lines.slice(1).map((line) => {
     if (!line.trim()) return null; // Skip empty lines
@@ -115,12 +130,14 @@ export function useGoogleSheetData<T>(sheetId: string, tabName: string) {
     async function loadData() {
       try {
         setLoading(true);
+        console.log(`Loading data for tab: ${tabName}`);
         const result = await fetchGoogleSheetData<T>(sheetId, tabName);
+        console.log(`Loaded ${result.length} items for ${tabName}`);
         setData(result);
         setError(null);
       } catch (err) {
         setError(err instanceof Error ? err : new Error('Unknown error'));
-        console.error("Error loading Google Sheet data:", err);
+        console.error(`Error loading Google Sheet data for ${tabName}:`, err);
       } finally {
         setLoading(false);
       }
