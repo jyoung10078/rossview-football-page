@@ -10,6 +10,7 @@ import { useGoogleSheetData, Player, Coach } from "@/lib/googleSheets";
 import { useToast } from "@/components/ui/use-toast";
 import { GOOGLE_SHEET_ID, SHEET_TABS } from "@/config";
 import React from "react";
+import { Link } from "react-router-dom";
 
 import gameRaining from "@/assets/gallery-images/game_raining.png";
 
@@ -285,8 +286,8 @@ const Team = () => {
           <p className="text-lg text-gray-700 max-w-2xl mx-auto mb-8">
             Interested students should contact the coaching staff for information about tryouts and team requirements.
           </p>
-          <Button className="bg-rossview-red hover:bg-red-800 text-white">
-            Contact Coaches
+          <Button className="bg-rossview-red hover:bg-red-800 text-white" asChild>
+            <Link to="/contact">Contact Coaches</Link>
           </Button>
         </div>
       </section>
