@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -15,9 +14,12 @@ import { useToast } from "@/components/ui/use-toast";
 import { Phone, Mail, MapPin } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import emailjs from '@emailjs/browser';
+
 
 const Contact = () => {
   const { toast } = useToast();
+  const form = useRef<HTMLFormElement>(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -39,8 +41,15 @@ const Contact = () => {
     e.preventDefault();
     setLoading(true);
     
-    // Simulate form submission
-    setTimeout(() => {
+    // Send email using EmailJS
+    emailjs.sendForm(
+      import.meta.env.VITE_EMAIL_SERVICE_ID || 'your_service_id', // Your EmailJS service ID
+      import.meta.env.VITE_CONTACT_TEMPLATE_ID || 'your_template_id', // Your EmailJS template ID
+      form.current as HTMLFormElement,
+      import.meta.env.VITE_EMAIL_PUBLIC_KEY || 'your_public_key' // Your EmailJS public key
+    )
+    .then((result) => {
+      console.log('Email sent successfully:', result.text);
       toast({
         title: "Message Sent",
         description: "Thank you for your message. We will respond within 2 business days.",
@@ -53,9 +62,18 @@ const Contact = () => {
         subject: "",
         message: ""
       });
-      
+    })
+    .catch((error) => {
+      console.error('Failed to send email:', error);
+      toast({
+        title: "Error",
+        description: "Failed to send your message. Please try again later.",
+        variant: "destructive"
+      });
+    })
+    .finally(() => {
       setLoading(false);
-    }, 1500);
+    });
   };
 
   return (
@@ -173,44 +191,47 @@ const Contact = () => {
             
             <div>
               <h2 className="section-title">Send a Message</h2>
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form ref={form} onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 gap-6">
                   <div className="space-y-2">
                     <Label htmlFor="name">Name</Label>
                     <Input 
-                      id="name"
-                      name="name"
-                      placeholder="Your name" 
+                      id="name" 
+                      name="name" 
                       value={formData.name}
                       onChange={handleInputChange}
-                      required
+                      placeholder="Your name" 
+                      required 
                     />
                   </div>
                   
                   <div className="space-y-2">
                     <Label htmlFor="email">Email</Label>
                     <Input 
-                      id="email"
-                      name="email"
+                      id="email" 
+                      name="email" 
                       type="email" 
-                      placeholder="your.email@example.com" 
                       value={formData.email}
                       onChange={handleInputChange}
-                      required
+                      placeholder="Your email address" 
+                      required 
                     />
                   </div>
                   
                   <div className="space-y-2">
                     <Label htmlFor="subject">Subject</Label>
-                    <Select value={formData.subject} onValueChange={handleSelectChange} required>
-                      <SelectTrigger>
+                    <Select 
+                      value={formData.subject} 
+                      onValueChange={handleSelectChange}
+                    >
+                      <SelectTrigger id="subject">
                         <SelectValue placeholder="Select a subject" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="general">General Inquiry</SelectItem>
-                        <SelectItem value="recruiting">Player Recruiting</SelectItem>
-                        <SelectItem value="booster">Booster Club</SelectItem>
-                        <SelectItem value="sponsorship">Sponsorship</SelectItem>
+                        <SelectItem value="tickets">Ticket Information</SelectItem>
+                        <SelectItem value="sponsorship">Sponsorship Opportunities</SelectItem>
+                        <SelectItem value="volunteer">Volunteer Opportunities</SelectItem>
                         <SelectItem value="other">Other</SelectItem>
                       </SelectContent>
                     </Select>
@@ -219,17 +240,21 @@ const Contact = () => {
                   <div className="space-y-2">
                     <Label htmlFor="message">Message</Label>
                     <Textarea 
-                      id="message"
-                      name="message"
-                      placeholder="How can we help you?" 
+                      id="message" 
+                      name="message" 
                       value={formData.message}
                       onChange={handleInputChange}
-                      rows={5} 
-                      required
+                      placeholder="Your message" 
+                      rows={6} 
+                      required 
                     />
                   </div>
                   
-                  <Button type="submit" className="bg-rossview-red hover:bg-red-800 w-full" disabled={loading}>
+                  <Button 
+                    type="submit" 
+                    className="bg-rossview-red hover:bg-red-800 text-white w-full"
+                    disabled={loading}
+                  >
                     {loading ? "Sending..." : "Send Message"}
                   </Button>
                 </div>
@@ -240,14 +265,24 @@ const Contact = () => {
       </section>
       
       {/* Map Section */}
-      <section className="h-80 relative">
-        <iframe 
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3136.674794026409!2d-87.287663!3d36.557173!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88652d79c4d5b39b%3A0xabb09fba0b38d4f2!2sRossview%20High%20School!5e0!3m2!1sen!2sus!4v1621423971100!5m2!1sen!2sus" 
-          className="absolute inset-0 w-full h-full border-0" 
-          loading="lazy"
-          title="Map of Rossview High School"
-          allowFullScreen
-        ></iframe>
+      <section className="py-12 bg-gray-100">
+        <div className="container mx-auto px-4">
+          <h2 className="section-title text-center mx-auto after:left-1/2 after:-translate-x-1/2 mb-8">
+            Find Us
+          </h2>
+          <div className="aspect-video max-w-5xl mx-auto rounded-lg overflow-hidden shadow-lg">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3222.3075353885396!2d-87.2988813!3d36.5953528!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x886534da4e7b5e7d%3A0x3e9780fe9df3d700!2sRossview%20High%20School!5e0!3m2!1sen!2sus!4v1656789012345!5m2!1sen!2sus" 
+              width="100%" 
+              height="100%" 
+              style={{ border: 0 }} 
+              allowFullScreen 
+              loading="lazy" 
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Rossview High School Map"
+            />
+          </div>
+        </div>
       </section>
 
       <Footer />
