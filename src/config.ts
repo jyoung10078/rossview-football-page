@@ -17,11 +17,12 @@
  * Format of Google Sheets URL: https://docs.google.com/spreadsheets/d/{SHEET_ID}/edit
  */
 
-// Extract the sheet ID from the pubhtml URL
-// The URL you provided is a published HTML view, but we need the sheet ID
-// Your URL: https://docs.google.com/spreadsheets/d/e/2PACX-1vRCo9M17cIjZMlMOuy4egAavvwjHQgU4DOVypgfwDw9ZeaKZ55Ytzw8KbvCUln4ssCObSyY9NIYuZJR/pubhtml
-// We need the actual Sheet ID which would be in the format: https://docs.google.com/spreadsheets/d/{SHEET_ID}/edit
-
-// Using the ID portion from the provided URL - this is the best we can do without the direct edit URL
+// The ID from the published Google Sheet URL
 export const GOOGLE_SHEET_ID = "2PACX-1vRCo9M17cIjZMlMOuy4egAavvwjHQgU4DOVypgfwDw9ZeaKZ55Ytzw8KbvCUln4ssCObSyY9NIYuZJR";
 
+// Tab names in the Google Sheet
+export const SHEET_TABS = {
+  PLAYERS: "Players",
+  COACHES: "Coaches",
+  GAMES: "Games"
+};

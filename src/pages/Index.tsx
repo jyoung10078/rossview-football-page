@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -64,9 +63,9 @@ const Index = () => {
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat animate-hero-image" 
             style={{ 
-              backgroundImage: "url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?ixlib=rb-4.0.3')", 
+              backgroundImage: "url('https://images.unsplash.com/photo-1486739985386-d4fae04ca6f7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')", 
               backgroundPosition: "center 30%",
-              filter: "brightness(0.6)"
+              filter: "brightness(0.65)"
             }}
           />
         </div>
@@ -81,10 +80,10 @@ const Index = () => {
             </p>
             <div className="flex flex-wrap gap-4">
               <Button size="lg" className="bg-rossview-red hover:bg-red-800 text-white">
-                <Link to="/schedule">View Schedule</Link>
+                <Link to="/schedule" className="text-white">View Schedule</Link>
               </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-                <Link to="/team">Meet The Team</Link>
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/20">
+                <Link to="/team" className="text-white">Meet The Team</Link>
               </Button>
             </div>
           </div>

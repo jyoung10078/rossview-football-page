@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from 'react';
+import { SHEET_TABS } from '@/config';
 
 // Types for our data
 export interface Player {
@@ -41,7 +42,9 @@ export async function fetchGoogleSheetData<T>(sheetId: string, tabName: string):
     // Alternative format for published sheets
     `https://docs.google.com/spreadsheets/d/e/${sheetId}/pub?gid=0&single=true&output=csv&sheet=${encodeURIComponent(tabName)}`,
     // Another alternative format
-    `https://docs.google.com/spreadsheets/d/e/${sheetId}/pubhtml?gid=0&single=true&output=csv&sheet=${encodeURIComponent(tabName)}`
+    `https://docs.google.com/spreadsheets/d/e/${sheetId}/pubhtml?gid=0&single=true&output=csv&sheet=${encodeURIComponent(tabName)}`,
+    // Try without specifying sheet
+    `https://docs.google.com/spreadsheets/d/e/${sheetId}/pub?output=csv`
   ];
   
   let lastError: Error | null = null;
@@ -49,7 +52,7 @@ export async function fetchGoogleSheetData<T>(sheetId: string, tabName: string):
   // Try each URL format until one works
   for (const url of urls) {
     try {
-      console.log(`Attempting to fetch data from URL: ${url}`);
+      console.log(`Attempting to fetch ${tabName} data from URL: ${url}`);
       const response = await fetch(url, {
         // Add these headers to help with CORS issues
         headers: {
@@ -59,34 +62,42 @@ export async function fetchGoogleSheetData<T>(sheetId: string, tabName: string):
       });
       
       if (!response.ok) {
-        console.warn(`Failed to fetch data from ${url}: ${response.status} ${response.statusText}`);
+        console.warn(`Failed to fetch ${tabName} data from ${url}: ${response.status} ${response.statusText}`);
         continue; // Try next URL format
       }
       
       const csvText = await response.text();
-      console.log(`Received data length: ${csvText.length} characters from ${url}`);
+      console.log(`Received ${tabName} data length: ${csvText.length} characters from ${url}`);
       
       // Check if we got HTML instead of CSV
       if (csvText.toLowerCase().includes('<!doctype html>') || csvText.toLowerCase().includes('<html>')) {
-        console.warn('Received HTML instead of CSV data, trying next URL format');
+        console.warn(`Received HTML instead of CSV data for ${tabName}, trying next URL format`);
         continue;
       }
       
-      return parseCSV<T>(csvText);
+      // Check if the data contains the expected columns based on tabName
+      const result = parseCSV<T>(csvText, tabName);
+      if (result.length > 0) {
+        console.log(`Successfully fetched ${tabName} data:`, result);
+        return result;
+      } else {
+        console.warn(`Successfully fetched ${tabName} data but it appears to be empty`);
+        continue;
+      }
     } catch (error) {
-      console.warn(`Error fetching Google Sheet data from ${url}:`, error);
+      console.warn(`Error fetching ${tabName} data from ${url}:`, error);
       lastError = error instanceof Error ? error : new Error('Unknown error');
       // Continue to next URL format
     }
   }
   
   // If all URLs failed, throw the last error
-  console.error("All URL formats failed to retrieve data");
-  throw lastError || new Error('Failed to fetch Google Sheet data');
+  console.error(`All URL formats failed to retrieve ${tabName} data`);
+  throw lastError || new Error(`Failed to fetch ${tabName} data from Google Sheet`);
 }
 
 // Parse CSV data into JavaScript objects
-function parseCSV<T>(csv: string): T[] {
+function parseCSV<T>(csv: string, tabName?: string): T[] {
   const lines = csv.split('\n');
   if (lines.length < 2) {
     console.warn("CSV data contains less than 2 lines, may be empty");
@@ -94,7 +105,7 @@ function parseCSV<T>(csv: string): T[] {
   }
   
   const headers = parseCSVLine(lines[0]);
-  console.log(`CSV headers: ${headers.join(', ')}`);
+  console.log(`CSV headers for ${tabName || 'unknown tab'}: ${headers.join(', ')}`);
   
   return lines.slice(1).map((line) => {
     if (!line.trim()) return null; // Skip empty lines
@@ -107,18 +118,23 @@ function parseCSV<T>(csv: string): T[] {
       
       // Handle boolean values for specific fields
       if ((header === 'isHomecoming' || header === 'isSeniorNight') && 
-          (value.toLowerCase() === 'true' || value.toLowerCase() === 'false')) {
-        entry[header] = value.toLowerCase() === 'true';
+          (value.toLowerCase() === 'true' || value.toLowerCase() === 'false' || value === '1' || value === '0' || value === 'yes' || value === 'no')) {
+        entry[header] = ['true', '1', 'yes'].includes(value.toLowerCase());
       }
       // Handle numeric values but prevent type conversion for fields that should remain as strings
       else if (!isNaN(Number(value)) && value.trim() !== '' && 
-               !['height', 'weight', 'grade'].includes(header)) {
+               !['height', 'weight', 'grade', 'result', 'date', 'time', 'position'].includes(header)) {
         entry[header] = Number(value);
       }
       else {
         entry[header] = value;
       }
     });
+    
+    // Special handling for result field in Games tab
+    if (tabName === SHEET_TABS.GAMES && entry.result === '') {
+      entry.result = null;
+    }
     
     return entry as T;
   }).filter(Boolean) as T[]; // Remove null entries

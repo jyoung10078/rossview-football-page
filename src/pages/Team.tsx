@@ -8,7 +8,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useGoogleSheetData, Player, Coach } from "@/lib/googleSheets";
 import { useToast } from "@/components/ui/use-toast";
-import { GOOGLE_SHEET_ID } from "@/config";
+import { GOOGLE_SHEET_ID, SHEET_TABS } from "@/config";
 import React from "react";
 
 const Team = () => {
@@ -19,14 +19,14 @@ const Team = () => {
     data: players,
     loading: playersLoading,
     error: playersError
-  } = useGoogleSheetData<Player>(GOOGLE_SHEET_ID, "Players");
+  } = useGoogleSheetData<Player>(GOOGLE_SHEET_ID, SHEET_TABS.PLAYERS);
   
   // Fetch coaches data from Google Sheet
   const {
     data: coaches,
     loading: coachesLoading,
     error: coachesError
-  } = useGoogleSheetData<Coach>(GOOGLE_SHEET_ID, "Coaches");
+  } = useGoogleSheetData<Coach>(GOOGLE_SHEET_ID, SHEET_TABS.COACHES);
 
   // Show error notifications if there are issues loading data
   React.useEffect(() => {

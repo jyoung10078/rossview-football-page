@@ -6,7 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useGoogleSheetData, Game } from "@/lib/googleSheets";
 import { useToast } from "@/components/ui/use-toast";
-import { GOOGLE_SHEET_ID } from "@/config";
+import { GOOGLE_SHEET_ID, SHEET_TABS } from "@/config";
 
 const Schedule = () => {
   const { toast } = useToast();
@@ -16,7 +16,7 @@ const Schedule = () => {
     data: games,
     loading: gamesLoading,
     error: gamesError
-  } = useGoogleSheetData<Game>(GOOGLE_SHEET_ID, "Games");
+  } = useGoogleSheetData<Game>(GOOGLE_SHEET_ID, SHEET_TABS.GAMES);
 
   // Show error notifications if there are issues loading data
   React.useEffect(() => {
