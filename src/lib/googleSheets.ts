@@ -34,32 +34,55 @@ export interface Game {
 
 // Function to fetch and parse data from a published Google Sheet
 export async function fetchGoogleSheetData<T>(sheetId: string, tabName: string): Promise<T[]> {
-  // Google Sheets must be published to the web (File > Publish to the Web > Publish)
-  // The URL format allows us to get the data as CSV
-  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tabName)}`;
+  // Try multiple URL formats since we're not sure what format the user has shared
+  const urls = [
+    // Standard CSV export URL
+    `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tabName)}`,
+    // Alternative format for published sheets
+    `https://docs.google.com/spreadsheets/d/e/${sheetId}/pub?gid=0&single=true&output=csv&sheet=${encodeURIComponent(tabName)}`,
+    // Another alternative format
+    `https://docs.google.com/spreadsheets/d/e/${sheetId}/pubhtml?gid=0&single=true&output=csv&sheet=${encodeURIComponent(tabName)}`
+  ];
   
-  try {
-    console.log(`Fetching data from sheet: ${sheetId}, tab: ${tabName}`);
-    const response = await fetch(url, {
-      // Add these headers to help with CORS issues
-      headers: {
-        'Accept': 'text/csv,text/plain;q=0.9',
-        'Cache-Control': 'no-cache'
+  let lastError: Error | null = null;
+  
+  // Try each URL format until one works
+  for (const url of urls) {
+    try {
+      console.log(`Attempting to fetch data from URL: ${url}`);
+      const response = await fetch(url, {
+        // Add these headers to help with CORS issues
+        headers: {
+          'Accept': 'text/csv,text/plain;q=0.9',
+          'Cache-Control': 'no-cache'
+        }
+      });
+      
+      if (!response.ok) {
+        console.warn(`Failed to fetch data from ${url}: ${response.status} ${response.statusText}`);
+        continue; // Try next URL format
       }
-    });
-    
-    if (!response.ok) {
-      console.error(`Failed to fetch data: ${response.status} ${response.statusText}`);
-      throw new Error(`Failed to fetch data: ${response.status}`);
+      
+      const csvText = await response.text();
+      console.log(`Received data length: ${csvText.length} characters from ${url}`);
+      
+      // Check if we got HTML instead of CSV
+      if (csvText.toLowerCase().includes('<!doctype html>') || csvText.toLowerCase().includes('<html>')) {
+        console.warn('Received HTML instead of CSV data, trying next URL format');
+        continue;
+      }
+      
+      return parseCSV<T>(csvText);
+    } catch (error) {
+      console.warn(`Error fetching Google Sheet data from ${url}:`, error);
+      lastError = error instanceof Error ? error : new Error('Unknown error');
+      // Continue to next URL format
     }
-    
-    const csvText = await response.text();
-    console.log(`Received data length: ${csvText.length} characters`);
-    return parseCSV<T>(csvText);
-  } catch (error) {
-    console.error("Error fetching Google Sheet data:", error);
-    throw error;
   }
+  
+  // If all URLs failed, throw the last error
+  console.error("All URL formats failed to retrieve data");
+  throw lastError || new Error('Failed to fetch Google Sheet data');
 }
 
 // Parse CSV data into JavaScript objects

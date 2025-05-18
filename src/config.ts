@@ -16,4 +16,12 @@
  * 
  * Format of Google Sheets URL: https://docs.google.com/spreadsheets/d/{SHEET_ID}/edit
  */
-export const GOOGLE_SHEET_ID = "16JtfXWMEc1PZqv33nfEK_eVrii6aspggf201sBZ7Fwg"; // Replace with your actual Sheet ID
+
+// Extract the sheet ID from the pubhtml URL
+// The URL you provided is a published HTML view, but we need the sheet ID
+// Your URL: https://docs.google.com/spreadsheets/d/e/2PACX-1vRCo9M17cIjZMlMOuy4egAavvwjHQgU4DOVypgfwDw9ZeaKZ55Ytzw8KbvCUln4ssCObSyY9NIYuZJR/pubhtml
+// We need the actual Sheet ID which would be in the format: https://docs.google.com/spreadsheets/d/{SHEET_ID}/edit
+
+// Using the ID portion from the provided URL - this is the best we can do without the direct edit URL
+export const GOOGLE_SHEET_ID = "2PACX-1vRCo9M17cIjZMlMOuy4egAavvwjHQgU4DOVypgfwDw9ZeaKZ55Ytzw8KbvCUln4ssCObSyY9NIYuZJR";
+
