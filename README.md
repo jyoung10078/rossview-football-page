@@ -1,59 +1,127 @@
-# Welcome to your Lovable project
+# Rossview Hawks Football Website
 
-## Project info
+A modern, responsive website for the Rossview High School Hawks football team in Clarksville, Tennessee. This project provides information about the team, schedule, gallery, sponsors, and more.
 
-**URL**: https://lovable.dev/projects/c43281c7-16ab-4502-b5fe-1643669783da
+![Rossview Hawks Football](https://via.placeholder.com/800x400?text=Rossview+Hawks+Football)
 
-## How can I edit this code?
+## Technologies Used
 
-There are several ways of editing your application.
+- **React**: Frontend library for building user interfaces
+- **TypeScript**: Static type-checking for JavaScript
+- **Vite**: Next-generation frontend tooling
+- **React Router**: For navigation and routing
+- **Tailwind CSS**: Utility-first CSS framework
+- **shadcn/ui**: Reusable UI components built with Radix UI and Tailwind
+- **React Query**: For data fetching and state management
+- **EmailJS**: For contact form functionality
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## Features
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+- Responsive design for all device sizes
+- Team roster and coaching staff information
+- Game schedules and results
+- Photo gallery
+- Sponsor showcase
+- Contact form
+- About page with program information
 
-# Step 3: Install the necessary dependencies.
-npm i
+## Getting Started
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+### Prerequisites
+
+- Node.js (v16 or higher)
+- npm or yarn or bun
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/rossview-football-page.git
+   cd rossview-football-page
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   bun install
+   ```
+
+3. Create a `.env` file in the root directory with your environment variables:
+   ```
+   VITE_GOOGLE_SHEETS_API_KEY=your_google_sheets_api_key
+   VITE_EMAILJS_SERVICE_ID=your_emailjs_service_id
+   VITE_EMAILJS_TEMPLATE_ID=your_emailjs_template_id
+   VITE_EMAILJS_PUBLIC_KEY=your_emailjs_public_key
+   ```
+
+4. Start the development server:
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   # or
+   bun dev
+   ```
+
+5. Open your browser and navigate to `http://localhost:8080`
+
+### Building for Production
+
+```bash
+npm run build
+# or
+yarn build
+# or
+bun build
 ```
 
-**Edit a file directly in GitHub**
+The build artifacts will be stored in the `dist/` directory.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Project Structure
 
-**Use GitHub Codespaces**
+```
+rossview-football-page/
+├── public/             # Static assets
+├── src/
+│   ├── assets/         # Images and other assets
+│   ├── components/     # Reusable UI components
+│   ├── hooks/          # Custom React hooks
+│   ├── lib/            # Utility functions and libraries
+│   ├── pages/          # Page components
+│   ├── App.tsx         # Main App component
+│   ├── config.ts       # Configuration constants
+│   └── main.tsx        # Entry point
+├── .env                # Environment variables
+├── index.html          # HTML template
+├── package.json        # Dependencies and scripts
+├── tailwind.config.ts  # Tailwind CSS configuration
+├── tsconfig.json       # TypeScript configuration
+└── vite.config.ts      # Vite configuration
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Customization
 
-## What technologies are used for this project?
+- **Colors**: Edit the `tailwind.config.ts` file to change the color scheme
+- **Content**: Update the content in the page components under `src/pages/`
+- **Images**: Replace images in the `src/assets/` directory
 
-This project is built with:
+## Contributing
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## How can I deploy this project?
+## License
 
-Simply open [Lovable](https://lovable.dev/projects/c43281c7-16ab-4502-b5fe-1643669783da) and click on Share -> Publish.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Can I connect a custom domain to my Lovable project?
+## Acknowledgments
 
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+- Rossview High School and its football program
+- The shadcn/ui team for their excellent component library
+- The React and Vite communities for their amazing tools
