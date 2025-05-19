@@ -2,7 +2,14 @@
 
 A modern, responsive website for the Rossview High School Hawks football team in Clarksville, Tennessee. This project provides information about the team, schedule, gallery, sponsors, and more.
 
-![Rossview Hawks Football](https://via.placeholder.com/800x400?text=Rossview+Hawks+Football)
+Hosted on Vercel here: https://www.rossviewhawksfootball.com/
+
+## Overview
+
+I used the shadcn component library to make a very clean looking website for the Rossview High School Football team. Below, I have included screenshots for convenience. Please feel free to reach out to me at jyoung10078@gmail.com with any questions or concerns. Also, feel free to contribute!
+
+![Uploading image.png…]()
+
 
 ## Technologies Used
 
