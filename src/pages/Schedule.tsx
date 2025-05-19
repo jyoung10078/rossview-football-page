@@ -244,11 +244,7 @@ const Schedule = () => {
                             <div className="text-sm text-gray-600">Final</div>
                             <div className="text-xl font-bold">{game.result}</div>
                           </div>
-                        ) : (
-                          <Button variant="outline" className="border-rossview-red text-rossview-red hover:bg-rossview-red hover:text-white">
-                            Add to Calendar
-                          </Button>
-                        )}
+                        ) : ('')}
                       </div>
                     </div>
                   </CardContent>
