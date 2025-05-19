@@ -8,7 +8,13 @@ Hosted on Vercel here: https://www.rossviewhawksfootball.com/
 
 I used the shadcn component library to make a very clean looking website for the Rossview High School Football team. Below, I have included screenshots for convenience. Please feel free to reach out to me at jyoung10078@gmail.com with any questions or concerns. Also, feel free to contribute!
 
-![Uploading image.png…]()
+![Top of Home Page](images/top-home-page.png)
+
+![Middle of Home Page](images/middle-home-page.png)
+
+![Bottom of Home Page](images/bottom-home-page.png)
+
+![Contact Page](images/contact-page.png)
 
 
 ## Technologies Used
