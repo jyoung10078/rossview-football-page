@@ -27,6 +27,7 @@ const Contact = () => {
     message: ""
   });
   const [loading, setLoading] = useState(false);
+  console.log(import.meta.env.VITE_EMAIL_PUBLIC_KEY);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -62,8 +63,7 @@ const Contact = () => {
         console.error('Failed to send email:', error);
         toast({
           title: "Error",
-          description: `Public key: ${import.meta.env.VITE_EMAIL_PUBLIC_KEY}`,
-          //description: "Failed to send your message. Please try again later.",
+          description: "Failed to send your message. Please try again later.",
           variant: "destructive"
         });
       }
