@@ -51,6 +51,9 @@ const Contact = () => {
         description: "Thank you for your message. We will respond within 2 business days.",
       });
 
+      console.log("Public key:", import.meta.env.VITE_EMAIL_PUBLIC_KEY);
+
+
       // Sending message to Coaching Staff
       emailjs.sendForm(
         import.meta.env.VITE_EMAIL_SERVICE_ID || 'your_service_id',
