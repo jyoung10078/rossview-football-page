@@ -27,7 +27,12 @@ const Contact = () => {
     message: ""
   });
   const [loading, setLoading] = useState(false);
-  console.log(process.env || 'your_public_key');
+  console.log("Environment variables:", {
+    serviceId: import.meta.env.VITE_EMAIL_SERVICE_ID,
+    contactTemplateId: import.meta.env.VITE_CONTACT_TEMPLATE_ID,
+    messagePassTemplateId: import.meta.env.VITE_MESSAGE_PASS_TEMPLATE_ID,
+    publicKey: import.meta.env.VITE_EMAIL_PUBLIC_KEY
+  });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -43,7 +48,7 @@ const Contact = () => {
       import.meta.env.VITE_EMAIL_SERVICE_ID || 'your_service_id', // Your EmailJS service ID
       import.meta.env.VITE_CONTACT_TEMPLATE_ID || 'your_template_id', // Your EmailJS template ID
       form.current as HTMLFormElement,
-      import.meta.env.EMAIL_PUBLIC_KEY || 'your_public_key' // Your EmailJS public key
+      import.meta.env.VITE_EMAIL_PUBLIC_KEY || 'your_public_key' // Your EmailJS public key
     )
     .then((result) => {
       console.log('Email sent successfully:', result.text);
@@ -57,7 +62,7 @@ const Contact = () => {
         import.meta.env.VITE_EMAIL_SERVICE_ID || 'your_service_id',
         import.meta.env.VITE_MESSAGE_PASS_TEMPLATE_ID || 'your_template_id',
         form.current as HTMLFormElement,
-        import.meta.env.EMAIL_PUBLIC_KEY || 'your_public_key'
+        import.meta.env.VITE_EMAIL_PUBLIC_KEY || 'your_public_key'
       )
       .catch((error) => {
         console.error('Failed to send email:', error);
