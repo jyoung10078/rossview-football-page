@@ -27,6 +27,7 @@ const Contact = () => {
     message: ""
   });
   const [loading, setLoading] = useState(false);
+  console.log(import.meta.env.EMAIL_PUBLIC_KEY || 'your_public_key');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
