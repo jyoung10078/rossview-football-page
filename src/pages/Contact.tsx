@@ -14,7 +14,6 @@ import { useToast } from "@/components/ui/use-toast";
 import { Phone, Mail, MapPin } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import emailjs from '@emailjs/browser';
 
 
 const Contact = () => {
@@ -27,12 +26,6 @@ const Contact = () => {
     message: ""
   });
   const [loading, setLoading] = useState(false);
-  console.log("Environment variables:", {
-    serviceId: import.meta.env.VITE_EMAIL_SERVICE_ID,
-    contactTemplateId: import.meta.env.VITE_CONTACT_TEMPLATE_ID,
-    messagePassTemplateId: import.meta.env.VITE_MESSAGE_PASS_TEMPLATE_ID,
-    publicKey: import.meta.env.EMAIL_PUBLIC_KEY
-  });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -43,36 +36,25 @@ const Contact = () => {
     e.preventDefault();
     setLoading(true);
     
-    // Send email using EmailJS
-    emailjs.sendForm(
-      import.meta.env.VITE_EMAIL_SERVICE_ID || 'your_service_id', // Your EmailJS service ID
-      import.meta.env.VITE_CONTACT_TEMPLATE_ID || 'your_template_id', // Your EmailJS template ID
-      form.current as HTMLFormElement,
-      import.meta.env.EMAIL_PUBLIC_KEY || 'your_public_key' // Your EmailJS public key
-    )
-    .then((result) => {
-      console.log('Email sent successfully:', result.text);
+    // Send form data to our API endpoint
+    fetch('/api/send-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(() => {
       toast({
         title: "Message Sent",
         description: "Thank you for your message. We will respond within 2 business days.",
       });
-
-      // Sending message to Coaching Staff
-      emailjs.sendForm(
-        import.meta.env.VITE_EMAIL_SERVICE_ID || 'your_service_id',
-        import.meta.env.VITE_MESSAGE_PASS_TEMPLATE_ID || 'your_template_id',
-        form.current as HTMLFormElement,
-        import.meta.env.EMAIL_PUBLIC_KEY || 'your_public_key'
-      )
-      .catch((error) => {
-        console.error('Failed to send email:', error);
-        toast({
-          title: "Error",
-          description: "Failed to send your message. Please try again later.",
-          variant: "destructive"
-        });
-      }
-      )
       
       // Reset form
       setFormData({

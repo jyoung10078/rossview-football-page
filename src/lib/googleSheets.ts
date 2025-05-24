@@ -64,7 +64,6 @@ export async function fetchGoogleSheetData<T>(sheetId: string, tabName: string):
   // Try each URL format until one works
   for (const url of urls) {
     try {
-      console.log(`Attempting to fetch ${tabName} data from URL: ${url}`);
       const response = await fetch(url, {
         // Add these headers to help with CORS issues
         headers: {
@@ -79,7 +78,6 @@ export async function fetchGoogleSheetData<T>(sheetId: string, tabName: string):
       }
       
       const csvText = await response.text();
-      console.log(`Received ${tabName} data length: ${csvText.length} characters from ${url}`);
       
       // Check if we got HTML instead of CSV
       if (csvText.toLowerCase().includes('<!doctype html>') || csvText.toLowerCase().includes('<html>')) {
@@ -90,7 +88,6 @@ export async function fetchGoogleSheetData<T>(sheetId: string, tabName: string):
       // Check if the data contains the expected columns based on tabName
       const result = parseCSV<T>(csvText, tabName);
       if (result.length > 0) {
-        console.log(`Successfully fetched ${tabName} data:`, result);
         return result;
       } else {
         console.warn(`Successfully fetched ${tabName} data but it appears to be empty`);
@@ -117,7 +114,6 @@ function parseCSV<T>(csv: string, tabName?: string): T[] {
   }
   
   const headers = parseCSVLine(lines[0]).map(header => header.trim());
-  console.log(`CSV headers for ${tabName || 'unknown tab'}: ${headers.join(', ')}`);
   
   return lines.slice(1).map((line) => {
     if (!line.trim()) return null; // Skip empty lines
@@ -126,7 +122,6 @@ function parseCSV<T>(csv: string, tabName?: string): T[] {
     const entry: Record<string, any> = {};
     
     headers.forEach((header, index) => {
-      console.log(`Parsing header "${header}" (type:${typeof header}), with value "${values[index]} (type:${typeof values[index]})"`);
       let value = values[index] || '';
       
       // Handle boolean values for specific fields
@@ -134,7 +129,6 @@ function parseCSV<T>(csv: string, tabName?: string): T[] {
         // Convert numeric values to booleans (1 = true, 0 = false)
         const trimmedValue = value.trim();
         entry[header] = trimmedValue === "1" || trimmedValue.toLowerCase() === "true";
-        console.log(`Parsed ${header} value "${value}" (type: ${typeof value}) as ${entry[header]}`);
       }
 
       // Setting a default image URL if the image field is empty
@@ -195,9 +189,7 @@ export function useGoogleSheetData<T>(sheetId: string, tabName: string) {
     async function loadData() {
       try {
         setLoading(true);
-        console.log(`Loading data for tab: ${tabName}`);
         const result = await fetchGoogleSheetData<T>(sheetId, tabName);
-        console.log(`Loaded ${result.length} items for ${tabName}`);
         setData(result);
         setError(null);
       } catch (err) {
