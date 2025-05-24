@@ -1,9 +1,0 @@
-{
-  "name": "api",
-  "version": "1.0.0",
-  "description": "API functions for Rossview Football website",
-  "type": "commonjs",
-  "dependencies": {
-    "@emailjs/nodejs": "^5.0.2"
-  }
-}
