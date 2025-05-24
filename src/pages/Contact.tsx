@@ -15,7 +15,6 @@ import { Phone, Mail, MapPin } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-
 const Contact = () => {
   const { toast } = useToast();
   const form = useRef<HTMLFormElement>(null);
@@ -44,11 +43,12 @@ const Contact = () => {
       },
       body: JSON.stringify(formData),
     })
-    .then(response => {
+    .then(async response => {
+      const data = await response.json();
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error(data.message || 'Failed to send message');
       }
-      return response.json();
+      return data;
     })
     .then(() => {
       toast({
@@ -192,30 +192,34 @@ const Contact = () => {
             
             <div>
               <h2 className="section-title">Send a Message</h2>
+              <p className="text-lg text-gray-700 mb-8">
+                Have a question or comment? Fill out the form below and we'll get back to you as soon as possible.
+              </p>
+              
               <form ref={form} onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 gap-6">
                   <div className="space-y-2">
-                    <Label htmlFor="name">Name</Label>
+                    <Label htmlFor="name">Your Name</Label>
                     <Input 
                       id="name" 
                       name="name" 
+                      placeholder="John Doe" 
+                      required 
                       value={formData.name}
                       onChange={handleInputChange}
-                      placeholder="Your name" 
-                      required 
                     />
                   </div>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email">Email Address</Label>
                     <Input 
                       id="email" 
                       name="email" 
                       type="email" 
+                      placeholder="john@example.com" 
+                      required 
                       value={formData.email}
                       onChange={handleInputChange}
-                      placeholder="Your email address" 
-                      required 
                     />
                   </div>
                   
@@ -223,11 +227,11 @@ const Contact = () => {
                     <Label htmlFor="subject">Subject</Label>
                     <Input 
                       id="subject" 
-                      name="subject"
+                      name="subject" 
+                      placeholder="How can we help?" 
+                      required 
                       value={formData.subject}
                       onChange={handleInputChange}
-                      placeholder="Subject of your message" 
-                      required 
                     />
                   </div>
                   
@@ -236,22 +240,29 @@ const Contact = () => {
                     <Textarea 
                       id="message" 
                       name="message" 
+                      placeholder="Please provide details about your inquiry..." 
+                      rows={5} 
+                      required
                       value={formData.message}
                       onChange={handleInputChange}
-                      placeholder="Your message" 
-                      rows={6} 
-                      required 
                     />
                   </div>
-                  
-                  <Button 
-                    type="submit" 
-                    className="bg-rossview-red hover:bg-red-800 text-white w-full"
-                    disabled={loading}
-                  >
-                    {loading ? "Sending..." : "Send Message"}
-                  </Button>
                 </div>
+                
+                <Button 
+                  type="submit" 
+                  className="w-full bg-rossview-red hover:bg-red-800 text-white"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <>
+                      <span className="mr-2">Sending...</span>
+                      <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>
+                    </>
+                  ) : (
+                    "Send Message"
+                  )}
+                </Button>
               </form>
             </div>
           </div>
@@ -264,9 +275,9 @@ const Contact = () => {
           <h2 className="section-title text-center mx-auto after:left-1/2 after:-translate-x-1/2 mb-8">
             Find Us
           </h2>
-          <div className="aspect-video max-w-5xl mx-auto rounded-lg overflow-hidden shadow-lg">
+          <div className="aspect-video w-full max-w-5xl mx-auto rounded-lg overflow-hidden shadow-lg">
             <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3222.3075353885396!2d-87.2988813!3d36.5953528!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x886534da4e7b5e7d%3A0x3e9780fe9df3d700!2sRossview%20High%20School!5e0!3m2!1sen!2sus!4v1656789012345!5m2!1sen!2sus" 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3222.7257610773376!2d-87.2971233!3d36.5901799!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8865732e0d8b2a7d%3A0x6eb1ce4d335f6bc7!2sRossview%20High%20School!5e0!3m2!1sen!2sus!4v1652901234567!5m2!1sen!2sus" 
               width="100%" 
               height="100%" 
               style={{ border: 0 }} 
@@ -274,7 +285,7 @@ const Contact = () => {
               loading="lazy" 
               referrerPolicy="no-referrer-when-downgrade"
               title="Rossview High School Map"
-            />
+            ></iframe>
           </div>
         </div>
       </section>
