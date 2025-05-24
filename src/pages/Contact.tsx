@@ -14,6 +14,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Phone, Mail, MapPin } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import emailjs from '@emailjs/browser';
 
 const Contact = () => {
   const { toast } = useToast();
@@ -25,6 +26,11 @@ const Contact = () => {
     message: ""
   });
   const [loading, setLoading] = useState(false);
+  
+  // Initialize EmailJS for local development
+  if (window.location.hostname === 'localhost') {
+    emailjs.init(import.meta.env.VITE_EMAIL_PUBLIC_KEY);
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -35,46 +41,84 @@ const Contact = () => {
     e.preventDefault();
     setLoading(true);
     
-    // Send form data to our API endpoint
-    fetch('/api/send-email', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    })
-    .then(async response => {
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to send message');
-      }
-      return data;
-    })
-    .then(() => {
-      toast({
-        title: "Message Sent",
-        description: "Thank you for your message. We will respond within 2 business days.",
-      });
+    // For local development, use EmailJS directly
+    if (window.location.hostname === 'localhost') {
+      // Initialize EmailJS
+      emailjs.init(import.meta.env.VITE_EMAIL_PUBLIC_KEY);
       
-      // Reset form
-      setFormData({
-        name: "",
-        email: "",
-        subject: "",
-        message: ""
+      // Send email using EmailJS browser library
+      emailjs.send(
+        import.meta.env.VITE_EMAIL_SERVICE_ID,
+        import.meta.env.VITE_CONTACT_TEMPLATE_ID,
+        formData
+      )
+      .then(() => {
+        toast({
+          title: "Message Sent",
+          description: "Thank you for your message. We will respond within 2 business days.",
+        });
+        
+        // Reset form
+        setFormData({
+          name: "",
+          email: "",
+          subject: "",
+          message: ""
+        });
+      })
+      .catch((error) => {
+        console.error('Failed to send email:', error);
+        toast({
+          title: "Error",
+          description: "Failed to send your message. Please try again later.",
+          variant: "destructive"
+        });
+      })
+      .finally(() => {
+        setLoading(false);
       });
-    })
-    .catch((error) => {
-      console.error('Failed to send email:', error);
-      toast({
-        title: "Error",
-        description: "Failed to send your message. Please try again later.",
-        variant: "destructive"
+    } else {
+      // In production, use the API endpoint
+      fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+      .then(async response => {
+        if (!response.ok) {
+          const data = await response.json().catch(() => ({}));
+          throw new Error(data.message || 'Failed to send message');
+        }
+        return response.json();
+      })
+      .then(() => {
+        toast({
+          title: "Message Sent",
+          description: "Thank you for your message. We will respond within 2 business days.",
+        });
+        
+        // Reset form
+        setFormData({
+          name: "",
+          email: "",
+          subject: "",
+          message: ""
+        });
+      })
+      .catch((error) => {
+        console.error('Failed to send email:', error);
+        toast({
+          title: "Error",
+          description: "Failed to send your message. Please try again later.",
+          variant: "destructive"
+        });
+      })
+      .finally(() => {
+        setLoading(false);
       });
-    })
-    .finally(() => {
-      setLoading(false);
-    });
+    }
   };
 
   return (
