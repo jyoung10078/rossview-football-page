@@ -1,18 +1,8 @@
-// api/send-email.js
-const emailjs = require('@emailjs/nodejs');
+// /pages/api/send-email.js
+import emailjs from '@emailjs/nodejs';
 
-module.exports = async (req, res) => {
-  // Enable CORS
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
-
-  // Handle OPTIONS request for CORS preflight
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-
+export default async function handler(req, res) {
+  console.log("API endpoint called");
   // Only allow POST requests
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -23,13 +13,19 @@ module.exports = async (req, res) => {
     const { name, email, subject, message } = req.body;
     
     // Initialize EmailJS with server-side keys
+    console.log("Environment variables:", {
+      publicKeyExists: !!process.env.EMAIL_PUBLIC_KEY,
+      privateKeyExists: !!process.env.EMAIL_PRIVATE_KEY,
+      serviceIdExists: !!process.env.VITE_EMAIL_SERVICE_ID
+    });
+    
     emailjs.init({
       publicKey: process.env.EMAIL_PUBLIC_KEY,
       privateKey: process.env.EMAIL_PRIVATE_KEY // Optional but recommended for server-side
     });
     
     // Send email
-    await emailjs.send(
+    const result = await emailjs.send(
       process.env.VITE_EMAIL_SERVICE_ID,
       process.env.VITE_CONTACT_TEMPLATE_ID,
       { name, email, subject, message }
